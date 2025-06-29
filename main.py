@@ -1,24 +1,25 @@
+!pip install pyTelegramBotAPI
+
 import telebot
-import os
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-bot = telebot.TeleBot(BOT_TOKEN)
+TOKEN = "7853631384:AAFpUwW--38KDg05pe_TnN13xgcOEhxaQAo"
+bot = telebot.TeleBot(TOKEN)
 
-# 새로 들어온 사람의 메시지 삭제
 @bot.message_handler(content_types=['new_chat_members'])
-def handle_new_member(message):
+def delete_join(message):
     try:
         bot.delete_message(message.chat.id, message.message_id)
+        print("입장 메시지 삭제됨")
     except Exception as e:
-        print(f"입장 메시지 삭제 실패: {e}")
+        print("입장 메시지 삭제 실패:", e)
 
-# 나간 사람의 메시지 삭제
 @bot.message_handler(content_types=['left_chat_member'])
-def handle_left_member(message):
+def delete_leave(message):
     try:
         bot.delete_message(message.chat.id, message.message_id)
+        print("퇴장 메시지 삭제됨")
     except Exception as e:
-        print(f"퇴장 메시지 삭제 실패: {e}")
+        print("퇴장 메시지 삭제 실패:", e)
 
-print("🤖 Bot is running...")
+print("🤖 봇 실행 중...")
 bot.infinity_polling()
